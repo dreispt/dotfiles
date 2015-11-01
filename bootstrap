@@ -1,4 +1,6 @@
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-ln -s ~/.dotfiles/.vimrc ~/.vimrc
+cd ~/.dotfiles
+ln -s .vimrc ~/.vimrc
+ln -s .gitconfig ~/.gitconfig
 pip install --user powerline-status
 sudo apt-get install vim vim-python-jedi powerline
