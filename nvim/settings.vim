@@ -5,7 +5,7 @@ endif
 
 
 set list
-set listchars=tab:▸\ ,eol:¬
+set listchars=tab:▸\ ,trail:¬
 
 set nowrap
 set mouse=a
