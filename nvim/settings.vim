@@ -8,7 +8,7 @@ set list
 set listchars=tab:▸\ ,trail:¬
 
 set nowrap
-set mouse=a
+"set mouse=a
 set ignorecase
 set noshowmode
 set nolazyredraw

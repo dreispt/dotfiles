@@ -24,6 +24,7 @@ call plug#begin(g:plugged_home)
   Plug 'ncm2/ncm2-jedi'
   " Formater
   Plug 'Chiel92/vim-autoformat'
+  Plug 'ambv/black'
 call plug#end()
 
 
@@ -39,6 +40,10 @@ colorscheme base16-monokai
 
 " vim-autoformat
 noremap <F3> :Autoformat<CR>
+
+" Black
+let g:black_linelength = 79
+
 " NCM2
 augroup NCM2
   autocmd!
