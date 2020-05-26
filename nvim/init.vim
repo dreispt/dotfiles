@@ -12,6 +12,7 @@ call plug#begin(g:plugged_home)
   Plug 'chriskempson/base16-vim'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
+  Plug 'airblade/vim-gitgutter'
   " Better Visual Guide
   Plug 'Yggdroot/indentLine'
   " syntax check
@@ -24,13 +25,13 @@ call plug#begin(g:plugged_home)
   Plug 'ncm2/ncm2-jedi'
   " Formater
   Plug 'Chiel92/vim-autoformat'
-  Plug 'ambv/black'
+  Plug 'psf/black', {'branch': 'stable'}
 call plug#end()
 
 
 " settings & mappings
 runtime settings.vim
-"runtime mappings.vim
+runtime mappings.vim
 
 
 " colorscheme
@@ -39,10 +40,10 @@ colorscheme base16-monokai
 
 
 " vim-autoformat
-noremap <F3> :Autoformat<CR>
+""noremap <F3> :Autoformat<CR>
 
 " Black
-let g:black_linelength = 79
+""let g:black_linelength = 88
 
 " NCM2
 augroup NCM2
@@ -53,7 +54,8 @@ augroup NCM2
   set completeopt=noinsert,menuone,noselect
   " When the <Enter> key is pressed while the popup menu is visible, it only
   " hides the menu. Use this mapping to close the menu and also start a new line.
-  inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+  inoremap <expr> <CR> (pumvisible() ? "\<c-y>" : "\<CR>")
+  ""inoremap <expr> <CR> (pumvisible() && !empty(v:completed_item) ? "\<c-y>" : (pumvisible() ? "\<c-y>\<cr>" : "\<CR>"))
 augroup END
 " Ale
 let g:ale_lint_on_enter = 0

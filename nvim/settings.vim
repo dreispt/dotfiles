@@ -1,14 +1,14 @@
 if exists('b:settings_loaded')
   finish
 endif
-""let b:settings_loaded = 1
+let b:settings_loaded = 1
 
 
 set list
 set listchars=tab:▸\ ,trail:¬
 
 set nowrap
-"set mouse=a
+""set mouse=a
 set ignorecase
 set noshowmode
 set nolazyredraw
@@ -16,7 +16,7 @@ set laststatus=2
 set shortmess+=c
 
 set number
-set relativenumber
+""set relativenumber
 
 set fileformat=unix
 set fileformats=unix,dos

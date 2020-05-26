@@ -1,5 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/mnt/d/work2/ava/avatax_connector/avatax_connector/models'
-let g:netrw_dirhist_2='/home/daniel/.config/nvim'
-let g:netrw_dirhist_3='/mnt/d/work2/jdi/jonco-odoo12/etl-import'
