@@ -26,6 +26,7 @@ set ttimeoutlen=100
 
 set noswapfile
 set nowritebackup
+set hidden  " mllow leaving modified buffers
 
 set splitright
 set clipboard+=unnamedplus
@@ -35,6 +36,7 @@ set tabstop=8
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+set tw=89  " automatic line wrap
 
 
 if has('termguicolors')

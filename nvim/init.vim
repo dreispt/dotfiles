@@ -12,6 +12,7 @@ call plug#begin(g:plugged_home)
   Plug 'chriskempson/base16-vim'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
+  " Git status gutter indicators
   Plug 'airblade/vim-gitgutter'
   " Better Visual Guide
   Plug 'Yggdroot/indentLine'
@@ -24,7 +25,7 @@ call plug#begin(g:plugged_home)
   Plug 'ncm2/ncm2-path'
   Plug 'ncm2/ncm2-jedi'
   " Formater
-  Plug 'Chiel92/vim-autoformat'
+  ""Plug 'Chiel92/vim-autoformat'
   Plug 'psf/black', {'branch': 'stable'}
 call plug#end()
 
@@ -43,7 +44,7 @@ colorscheme base16-monokai
 ""noremap <F3> :Autoformat<CR>
 
 " Black
-""let g:black_linelength = 88
+let g:black_linelength = 88
 
 " NCM2
 augroup NCM2
@@ -71,8 +72,12 @@ let g:airline#extensions#ale#enabled = 1
 let airline#extensions#ale#error_symbol = 'E:'
 let airline#extensions#ale#warning_symbol = 'W:'
 
-" WSL Copy-Paste
-" copy (write) highlighted text to .vimbuffer
-vmap <C-c> y:new ~/.vimbuffer<CR>VGp:x<CR> \| :!cat ~/.vimbuffer \| clip.exe <CR><CR>
-" paste from buffer
-map <C-v> :r ~/.vimbuffer<CR>
+" Persistent undo
+if has('persistent_undo')
+    call system('mkdir -p ~/.config/nvim-undo')
+    set undodir=~/.config/nvim-undo
+    set undofile
+endif
+
+" More frequent updates, for vim-gutter
+set updatetime=1000

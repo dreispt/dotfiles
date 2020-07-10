@@ -19,7 +19,24 @@ nnoremap <c-e><c-e> :vs $MYVIMRC<cr>
 nnoremap <leader>f zMzvzz
 tnoremap <esc> <c-\><c-n>
 
+" Add Pyhton debug breakpoint
+nnoremap <c-space> A<CR>import pudb; pu.db<ESC>
+
 nnoremap <C-e> :Ex<cr>
+nnoremap <C-l> :ls<cr>
 nnoremap <C-n> :bp<cr>
 nnoremap <C-m> :bn<cr>
 nnoremap <C-x> :bd<cr>
+
+" C-s to Save
+nnoremap <C-s> :w<cr>
+inoremap <C-s> <ESC>:w<cr>
+
+" WSL Copy-Paste
+" copy (write) highlighted text to .vimbuffer
+vmap <C-c><C-c> y:new ~/.vimbuffer<CR>VGp:x<CR> \| :!cat ~/.vimbuffer \| clip.exe <CR><CR>
+" paste from buffer
+map <C-v><C-v> :r ~/.vimbuffer<CR>
+
+" remove trailing space
+" autocmd BufWritePre *.py :%s/\s\+$//e
