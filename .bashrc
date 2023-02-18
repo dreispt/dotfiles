@@ -11,7 +11,8 @@ esac
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
-HISTTIMEFORMAT="%h %d %H:%M:%S "
+# HISTTIMEFORMAT="%h %d %H:%M:%S "
+HISTTIMEFORMAT="%F %T"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -124,3 +125,6 @@ if ! shopt -oq posix; then
 fi
 [ -r /home/daniel/.byobu/prompt ] && . /home/daniel/.byobu/prompt   #byobu-prompt#
 source ~/dotfiles/bash-git-prompt/gitprompt.sh
+
+# Created by `pipx` on 2022-04-26 17:47:20
+export PATH="$PATH:/home/daniel/.local/bin"
