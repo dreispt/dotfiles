@@ -28,7 +28,7 @@ shopt -s checkwinsize
 # Store multi-line commands in one history entry
 shopt -s cmdhist
 
-# Prompt - save history imemdiately
+# Prompt - save history immediately
 PROMPT_COMMAND='history -a'
 
 # If set, the pattern "**" used in a pathname expansion context will
@@ -123,8 +123,51 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-[ -r /home/daniel/.byobu/prompt ] && . /home/daniel/.byobu/prompt   #byobu-prompt#
+
+# ssh-agent
+env=~/.ssh/agent.env
+
+agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+
+agent_start () {
+    (umask 077; ssh-agent >| "$env")
+    . "$env" >| /dev/null ; }
+
+agent_load_env
+
+# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2=agent not running
+agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+
+if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    ssh-add
+elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    ssh-add
+fi
+
+unset env
+
+# byobu-prompt
+[ -r /home/daniel/.byobu/prompt ] && . /home/daniel/.byobu/prompt
+
+# bash-git-prompt
 source ~/dotfiles/bash-git-prompt/gitprompt.sh
 
-# Created by `pipx` on 2022-04-26 17:47:20
-export PATH="$PATH:/home/daniel/.local/bin"
+# Created by `pipx` on 2023-02-22 15:11:05
+export PATH="$PATH:/home/dreis/.local/bin"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/dreis/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/dreis/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/dreis/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/dreis/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

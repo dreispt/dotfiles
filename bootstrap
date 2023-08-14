@@ -1,11 +1,19 @@
-#ln -s .vimrc ~/.vimrc
-#ln -s .gitconfig ~/.gitconfig
+mv ~/.vimrc ~/.vimrc-old
+mv ~/.gitconfig ~/.gitconfig-old
+mv ~/.bashrc ~/.bashrc-old
+
+ln -s ~/dotfiles/.vimrc ~/.vimrc
+ln -s ~/dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/dotfiles/.bashrc ~/.bashrc
+ln -s ~/dotfiles/nvim/ ~/.config/nvim
 
 git clone https://github.com/magicmonty/bash-git-prompt.git --depth=1
 echo "source ~/dotfiles/bash-git-prompt/gitprompt.sh" >> ~/.bashrc
 
-pip install pynvim,jedi  # deodeplete
 
-#git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim --depth=1
-#pip install --user powerline-status
-#sudo apt-get install vim vim-python-jedi powerline
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# In nvim, run :PlugInstall
+
+# pip install --user powerline-status
+# sudo apt-get install vim vim-python-jedi powerline
+# pip install pynvim,jedi  # deodeplete
