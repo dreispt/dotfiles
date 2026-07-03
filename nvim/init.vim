@@ -8,14 +8,26 @@ endif
 
 " Plugins List
 call plug#begin(g:plugged_home)
-  " UI related
+  " Colorcheme
   Plug 'chriskempson/base16-vim'
+  " Powerline
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
-  " Git status gutter indicators
-  Plug 'airblade/vim-gitgutter'
-  " Better Visual Guide
+  ""Plug 'itchyny/lightline.vim'
+  Plug 'chrisbra/csv.vim'
+
+  " Editing and Motion helpers
+  Plug 'machakann/vim-sandwich'
+  Plug 'wellle/targets.vim'
+  Plug 'tpope/vim-commentary'
+  Plug 'unblevable/quick-scope'
   Plug 'Yggdroot/indentLine'
+
+  " Information and indicators
+  Plug 'airblade/vim-gitgutter'
+  Plug 'APZelos/blamer.nvim'
+  ""Plug 'f-person/git-blame.nvim'
+
   " syntax check
   Plug 'dense-analysis/ale'
   " Formater
@@ -24,7 +36,6 @@ call plug#begin(g:plugged_home)
   " Vim
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-rhubarb'
-  Plug 'f-person/git-blame.nvim'
 
   " Autocomplete
   Plug 'ncm2/ncm2'  " nvim-completion-manager
@@ -34,6 +45,8 @@ call plug#begin(g:plugged_home)
   Plug 'ncm2/ncm2-path'
   Plug 'ncm2/ncm2-jedi'
 
+  Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+  " Plug 'github/copilot.vim'
 call plug#end()
 
 " settings & mappings
@@ -108,3 +121,8 @@ endif
 
 " More frequent updates, for vim-gutter
 set updatetime=1000
+
+
+let g:gitblame_date_format = '%c'
+let g:blamer_enabled = 1
+let g:blamer_date_format = '%d/%b/%y'
