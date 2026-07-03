@@ -6,6 +6,9 @@ ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.bashrc ~/.bashrc
 ln -s ~/dotfiles/nvim/ ~/.config/nvim
+ln -s ~/dotfiles/.vscode ~
+ln -s ~/dotfiles/.wslconfig ~
+ln -s ~/dotfiles/init.sh ~
 
 git clone https://github.com/magicmonty/bash-git-prompt.git --depth=1
 echo "source ~/dotfiles/bash-git-prompt/gitprompt.sh" >> ~/.bashrc
