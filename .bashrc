@@ -148,13 +148,14 @@ fi
 unset env
 
 # byobu-prompt
-[ -r /home/daniel/.byobu/prompt ] && . /home/daniel/.byobu/prompt
+[ -r "$HOME/.byobu/prompt" ] && . "$HOME/.byobu/prompt"
 
 # bash-git-prompt
-source ~/dotfiles/bash-git-prompt/gitprompt.sh
+DOTFILES_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)
+source "$DOTFILES_DIR/bash-git-prompt/gitprompt.sh"
 
 # Created by `pipx` on 2023-02-22 15:11:05
-export PATH="$PATH:/home/dreis/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 
 # Use Windows browser, requires https://github.com/wslutilities/wslu

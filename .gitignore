@@ -1,1 +1,20 @@
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
 nvim/.netrwhist
+
+# Backups and temp files
+*.old
+*.orig
+*.bak
+*~
+
+# Generated
+*.pyc
+*.pyo
+__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db

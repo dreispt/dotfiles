@@ -1,22 +1,88 @@
-mv ~/.vimrc ~/.vimrc-old
-mv ~/.gitconfig ~/.gitconfig-old
-mv ~/.bashrc ~/.bashrc-old
+#!/usr/bin/env bash
+set -euo pipefail
 
-ln -s ~/dotfiles/.vimrc ~/.vimrc
-ln -s ~/dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/dotfiles/.bashrc ~/.bashrc
-ln -s ~/dotfiles/nvim/ ~/.config/nvim
-ln -s ~/dotfiles/.vscode ~
-ln -s ~/dotfiles/.wslconfig ~
-ln -s ~/dotfiles/init.sh ~
+# Resolve the directory this script lives in, regardless of the caller's cwd.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-git clone https://github.com/magicmonty/bash-git-prompt.git --depth=1
-echo "source ~/dotfiles/bash-git-prompt/gitprompt.sh" >> ~/.bashrc
+# Back up a target if it exists, unless it is already a symlink to the desired source.
+backup_or_skip() {
+    local target="$1"
+    local desired="$2"
 
+    if [ -L "$target" ] && [ "$(readlink -f "$target")" = "$desired" ]; then
+        return 0
+    fi
 
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-# In nvim, run :PlugInstall
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        local backup="${target}.old"
+        local i=1
+        while [ -e "$backup" ] || [ -L "$backup" ]; do
+            backup="${target}.old.${i}"
+            i=$((i + 1))
+        done
+        echo "Backing up $target -> $backup"
+        mv "$target" "$backup"
+    fi
+    return 1
+}
 
-# pip install --user powerline-status
-# sudo apt-get install vim vim-python-jedi powerline
-# pip install pynvim,jedi  # deodeplete
+link_file() {
+    local src="$1"
+    local dst="$2"
+    if backup_or_skip "$dst" "$src"; then
+        echo "Already linked: $dst"
+    else
+        ln -s "$src" "$dst"
+        echo "Linked $dst -> $src"
+    fi
+}
+
+mkdir -p "$HOME/.config"
+
+link_file "$SCRIPT_DIR/.bashrc" "$HOME/.bashrc"
+link_file "$SCRIPT_DIR/.gitconfig" "$HOME/.gitconfig"
+link_file "$SCRIPT_DIR/.vimrc" "$HOME/.vimrc"
+link_file "$SCRIPT_DIR/nvim" "$HOME/.config/nvim"
+link_file "$SCRIPT_DIR/.vscode" "$HOME/.vscode"
+link_file "$SCRIPT_DIR/.wslconfig" "$HOME/.wslconfig"
+link_file "$SCRIPT_DIR/init.sh" "$HOME/init.sh"
+
+# bash-git-prompt is a submodule; initialize it if possible, otherwise clone.
+if [ -f "$SCRIPT_DIR/bash-git-prompt/gitprompt.sh" ]; then
+    echo "bash-git-prompt already present."
+elif [ -d "$SCRIPT_DIR/.git" ]; then
+    echo "Initializing git submodules..."
+    if ! git -C "$SCRIPT_DIR" submodule update --init --recursive; then
+        echo "Submodule init failed; trying direct clone..."
+        if ! git clone --depth=1 https://github.com/magicmonty/bash-git-prompt.git "$SCRIPT_DIR/bash-git-prompt"; then
+            echo "WARNING: bash-git-prompt could not be installed. Run manually later."
+        fi
+    fi
+else
+    echo "Not a git clone; cloning bash-git-prompt..."
+    if ! git clone --depth=1 https://github.com/magicmonty/bash-git-prompt.git "$SCRIPT_DIR/bash-git-prompt"; then
+        echo "WARNING: bash-git-prompt could not be installed. Run manually later."
+    fi
+fi
+
+# Install vim-plug for Neovim (Vim config will be handled later).
+mkdir -p "$HOME/.local/share/nvim/site/autoload"
+if [ ! -f "$HOME/.local/share/nvim/site/autoload/plug.vim" ]; then
+    echo "Installing vim-plug for Neovim..."
+    if ! curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; then
+        echo "WARNING: vim-plug download failed. Run manually later."
+    fi
+fi
+
+echo ""
+echo "Bootstrap complete."
+echo ""
+echo "Next steps:"
+echo "  1. Run: $SCRIPT_DIR/install.sh                # install Python/Neovim dependencies"
+echo "  2. Run: nvim +PlugInstall +qall               # install Neovim plugins"
+echo "  3. Run: $SCRIPT_DIR/init.sh                   # start PostgreSQL and update packages"
+echo "  4. Copy .wslconfig to %USERPROFILE%\\.wslconfig on Windows and run: wsl --shutdown"
+echo "  5. Restart your terminal or run: source ~/.bashrc"
+echo ""
+echo "Re-run this script any time to update links or submodules."
